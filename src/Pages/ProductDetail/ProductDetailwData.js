@@ -171,7 +171,7 @@ class ProductDetailwData extends React.Component {
     return (
       <>
         <ImageModal
-          isOpen={isModalOpen}
+          isOpened={isModalOpen}
           close={closeModal}
           images={detailData.product_images}
         />

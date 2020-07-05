@@ -27,19 +27,9 @@ class ManProducts extends React.Component {
   render() {
     const { data, activeTab } = this.state;
 
-    const parsePrice = (x) => x;
+    const sortByLowerPrices = data.sort((a, b) => a.product_price - b.product_price);
 
-    const sortByLowerPrices = data
-      .slice()
-      .sort(
-        (a, b) => parsePrice(a.product_price) - parsePrice(b.product_price)
-      );
-
-    const sortByHigerPrices = data
-      .slice()
-      .sort(
-        (a, b) => parsePrice(b.product_price) - parsePrice(a.product_price)
-      );
+    const sortByHigerPrices = data.sort((a, b) => b.product_price - a.product_price);
 
     const blackColorOnly = data.filter((obj) => {
       return obj.product_color === "BLACK";

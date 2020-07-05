@@ -3,10 +3,10 @@ import "./ImageModal.scss";
 
 class ImageModal extends React.Component {
   render() {
-    const { isOpen, images, close } = this.props;
+    const { isOpened, images, close } = this.props;
     return (
       <>
-        {isOpen ? (
+        {isOpened ? (
           <div className="Modal-wrapper">
             <div className="MyModalImages">
               <div className="button-wrap">
