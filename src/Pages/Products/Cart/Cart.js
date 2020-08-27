@@ -1,44 +1,26 @@
 import React from "react";
-import "./Cart.scss";
+import { connect } from "react-redux";
+import { changeQuantity, removeProduct } from "../../../Redux/Actions"
 import Nav from "../../../Components/Nav/Nav";
 import Footer from "../../../Components/Footer/Footer";
+import "./Cart.scss";
 import { GoPlus } from "react-icons/go";
 import { GoDash } from "react-icons/go";
 
 class Cart extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cartList: this.props.location.state.cartList,
-    };
-  }
-
-  minusHandler = () => {
-    const newObj = { ...this.state.cartList[0] };
-    if (this.state.cartList[0].quantity > 1) {
-      newObj.quantity -= 1;
-      this.setState({ cartList: [newObj] });
-    }
-  };
-
-  plusHandler = () => {
-    const newObj = { ...this.state.cartList[0] };
-    if (this.state.cartList[0].quantity < 4) {
-      newObj.quantity += 1;
-      this.setState({ cartList: [newObj] });
-    }
-  };
-
   render() {
+    const { cartList, changeQuantity, removeProduct } = this.props;  
     return (
       <>
         <Nav />
         <div className="Cart">
           <div className="title">My Shopping Bag Ami</div>
           <div className="cart-container">
+          {cartList.length>0 ?
+          <>
             <div className="left-container">
-              {this.state.cartList &&
-                this.state.cartList.map((product, i) => {
+              {cartList &&
+                cartList.map((product, i) => {
                   return (
                     <div key={i} className="product">
                       <div className="product-img">
@@ -77,7 +59,7 @@ class Cart extends React.Component {
                             <span>Quantity</span>
                             <div className="control">
                               <button
-                                onClick={this.minusHandler}
+                                onClick={()=>changeQuantity(-1, product.name)}
                                 style={{
                                   cursor:
                                     product.quantity === 1
@@ -98,7 +80,7 @@ class Cart extends React.Component {
                                 value={product.quantity}
                               />
                               <button
-                                onClick={this.plusHandler}
+                                onClick={()=>changeQuantity(1, product.name)}
                                 style={{
                                   cursor:
                                     product.quantity === 4
@@ -117,7 +99,7 @@ class Cart extends React.Component {
                         </div>
                       </div>
                       <div className="remove-price">
-                        <button className="remove">Remove</button>
+                        <button className="remove" onClick={()=>removeProduct(product.name, product.selectedOption)}>Remove</button>
                         <div className="price">
                           ₩{product.price && product.price.toLocaleString()}
                         </div>
@@ -134,13 +116,13 @@ class Cart extends React.Component {
                     <div>Sub - Total</div>
                     <div>
                       ₩
-                      {this.state.cartList.length === 1
+                      {cartList && cartList.length === 1
                         ? (
-                            this.state.cartList[0].price *
-                            this.state.cartList[0].quantity
+                            cartList[0].price *
+                            cartList[0].quantity
                           ).toLocaleString()
-                        : this.state.cartList &&
-                          this.state.cartList
+                        : cartList.length > 1 &&
+                          cartList
                             .reduce((a, b) => {
                               return (
                                 a.price * a.quantity + b.price * b.quantity
@@ -162,14 +144,14 @@ class Cart extends React.Component {
                     </div>
                     <div>
                       ₩
-                      {this.state.cartList.length === 1
+                      {cartList.length === 1
                         ? (
-                            this.state.cartList[0].price *
-                              this.state.cartList[0].quantity +
+                            cartList[0].price *
+                              cartList[0].quantity +
                             31344
                           ).toLocaleString()
-                        : this.state.cartList &&
-                          this.state.cartList
+                        : cartList &&
+                          cartList
                             .reduce((a, b) => {
                               return (
                                 a.price * a.quantity +
@@ -187,19 +169,30 @@ class Cart extends React.Component {
                       right, you have 14 days to send it back to us.
                     </p>
                     <p>
-                      Read more in our&nbsp;
+                      Read more in our&nbsp;-
                       <a href="#!">returns and refund policy.</a>
                     </p>
                   </div>
                 </div>
               </div>
             </div>
+            </>
+            :   
+          <div className="empty-bag">
+            <img src="https://www.amiparis.com/static/ami/build/images/animated-ami-mascot.84104bd9c856ea6668f2.gif" alt="man"/>
+            <div>쇼핑백에 담긴 상품이 없습니다</div>
           </div>
+        }
         </div>
+        </div>
+    
         <Footer />
       </>
     );
   }
 }
 
-export default Cart;
+export default connect(state => {
+  return {
+    cartList: state.cartList
+  }}, { changeQuantity, removeProduct })(Cart);

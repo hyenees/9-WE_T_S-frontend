@@ -1,7 +1,9 @@
 import React from "react";
-import { API_URL } from "../../../config"
+import { connect } from "react-redux";
+import {changeQuantity} from "../../../Redux/Actions"
 import CartProduct from "./CartProduct";
 import WishProduct from "../Wishlist/WishProduct";
+import { API_URL } from "../../../config"
 import "./CartModal.scss";
 
 class CartModal extends React.Component {
@@ -25,52 +27,49 @@ class CartModal extends React.Component {
       }))
   }
 
-  quantityHandler = (count) => {
-    const newObj = { ...this.props.cartList[0] };
-    if (count === 1) {
-      if (this.props.cartList[0].quantity === 4) {
-        return;
-      }
-    } else {
-      if (this.props.cartList[0].quantity === 1) {
-        return;
-      }
+  cartQuantityHandler = ()=>{
+    const { cartList } = this.props
+    if(cartList.length === 0){
+      return 0;
     }
-
-    newObj.quantity += count;
-    this.setState({ cartList: [newObj] });
-  };
+    if(cartList.length === 1){
+      console.log(cartList[0].quantity)
+      return cartList[0].quantity
+    }
+    if(cartList.length > 1){
+      cartList.reduce((a, b) => {
+        return a.quantity + b.quantity})
+    }
+  }
 
   render() {
+    const {cartList, openCart, closeCart, openWishlist, closeWishlist } = this.props;
     return (
       <>
-        {this.props.openCart ? (
+        {openCart ? (
           <div className="product-container">
             <div className="bag-title">
               <div>
                 <button className="change">
-                  Bag (
-                  {this.props.cartList.length === 1
-                    ? this.props.cartList[0].quantity
-                    : this.props.cartList &&
-                      this.props.cartList.reduce((a, b) => {
-                        return a.quantity + b.quantity;
-                      })}
-                  )
+                  Bag ({this.cartQuantityHandler()})
                 </button>
                 <button>Wishlist (0)</button>
               </div>
-              <button className="close" onClick={this.props.closeCart}>
+              <button className="close" onClick={closeCart}>
                 Close
               </button>
             </div>
-            <CartProduct
-              cartList={this.props.cartList}
-              quantityHandler={this.quantityHandler}
-            />
+            {cartList.length > 0 ? 
+            <CartProduct/> 
+            : 
+            <div className="empty-bag">
+              <img src="https://www.amiparis.com/static/ami/build/images/animated-ami-mascot.84104bd9c856ea6668f2.gif" alt="man"/>
+              <div>쇼핑백에 담긴 상품이 없습니다</div>
+            </div>
+            }
           </div>
         ) : null}
-        {this.props.openWishlist && this.state.wishList.length > 0 ? (
+        {openWishlist && this.state.wishList.length > 0 ? (
           <div className="product-container">
             <div className="bag-title">
               <div>
@@ -81,7 +80,7 @@ class CartModal extends React.Component {
                   )
                 </button>
               </div>
-              <button className="close" onClick={this.props.closeWishlist}>
+              <button className="close" onClick={closeWishlist}>
                 Close
               </button>
             </div>
@@ -95,4 +94,7 @@ class CartModal extends React.Component {
   }
 }
 
-export default CartModal;
+export default connect(state => {
+  return {
+    cartList: state.cartList
+  }}, { changeQuantity })(CartModal);

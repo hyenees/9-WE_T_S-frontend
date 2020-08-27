@@ -1,14 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import { API_URL } from "../../config";
 import Newsletter from "../Newsletter/Newsletter";
 import NewsletterPortal from "../Newsletter/NewsletterPortal";
 import Search from "../Search/Search";
 import SearchPortal from "../Search/SearchPortal";
+import CartModal from "../../Pages/Products/Cart/CartModal";
+import "./Nav.scss";
 import ami_logo from "../../Images/amilogo.png";
 import ami_white from "../../Images/amilogo-white.png";
 import ami_black from "../../Images/amilogo1.png";
-import "./Nav.scss";
+
 
 class Nav extends React.Component {
   constructor() {
@@ -21,7 +24,6 @@ class Nav extends React.Component {
       Newsletter: false,
       Search: false,
       isLoggedIn: false,
-      cartClick: false,
       category: [],
     };
   }
@@ -108,14 +110,16 @@ class Nav extends React.Component {
   };
 
   cartQuantityHandler = ()=>{
-    if(this.props.cartList === undefined){
+    const { cartList } = this.props
+    if(cartList.length === 0){
       return 0;
     }
-    if(this.props.cartList.length === 1){
-      return this.props.cartList[0].quantity
+    if(cartList.length === 1){
+      console.log(cartList[0].quantity)
+      return cartList[0].quantity
     }
-    if(this.props.cartList.length > 1){
-      this.props.cartList.reduce((a, b) => {
+    if(cartList.length > 1){
+      cartList.reduce((a, b) => {
         return a.quantity + b.quantity})
     }
   }
@@ -128,11 +132,13 @@ class Nav extends React.Component {
 
     return (
       <>
+
       <div
         className={`Nav ${this.state.visible ? "text-logo" : ""}`}
         onMouseEnter={this.props.mouseEnterNav}
         onMouseLeave={this.props.mouseLeaveNav}
       >
+              <CartModal cartQuantityHandler={this.cartQuantityHandler}/>
         <ul className="left-menu">
           <li
             onMouseOver={() => this.mouseOver(0)}
@@ -385,14 +391,17 @@ class Nav extends React.Component {
             </Link>
           </li>
           <li>
-            <button className={colorchange} onClick={this.cartClickHandler}>
+            <button className={colorchange}>
               Cart ({this.cartQuantityHandler()})
             </button>
           </li>
           <li>
             <button className={colorchange}>KR ₩</button>
           </li>
+    
         </ul>
+        {console.log(this.props.openCart, this.props.openWishlist)}
+      
         {this.state.Newsletter && (
           <NewsletterPortal>
             <Newsletter onClose={this.handleCloseModal} />
@@ -404,9 +413,13 @@ class Nav extends React.Component {
           </SearchPortal>
         )}
       </div>
+    
       </>
     );
   }
 }
 
-export default Nav;
+export default connect(state => {
+  return {
+    cartList: state.cartList
+  }})(Nav);

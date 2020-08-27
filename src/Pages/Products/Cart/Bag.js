@@ -1,30 +1,34 @@
 import React from "react";
+import { connect } from "react-redux";
+import { changeQuantity, removeProduct } from "../../../Redux/Actions"
 import "./CartProduct.scss";
 import { GoPlus } from "react-icons/go";
 import { GoDash } from "react-icons/go";
 
-class Bag extends React.Component {
-  
+class Bag extends React.Component { 
   render() {
+    const { cartList, changeQuantity, removeProduct } = this.props;
+    
     return (
-      <div className="bag-box">
+      cartList.map((item, i)=>(
+        <div className="bag-box" key={i}>
         <div className="product">
           <div className="product-img">
-            <img src={this.props.productImage} alt="" />
+            <img src={item.productImage} alt="" />
           </div>
           <div className="product-box">
-            <div className="product-name">{this.props.name}</div>
+            <div className="product-name">{item.name}</div>
             <div className="select-box">
               <div className="size">
                 <span>Size</span>
                 <div className="control">
                   <select>
-                    {this.props.size &&
-                      this.props.size.map((s, index) => {
+                    {item.size &&
+                      item.size.map((s, index) => {
                         return (
                           <option
                             selected={
-                              s === this.props.selectedOption
+                              s === item.selectedOption
                                 ? "selected"
                                 : ""
                             }
@@ -39,18 +43,18 @@ class Bag extends React.Component {
               </div>
               <div className="colour">
                 <span>Colour</span>
-                <span>{this.props.color}</span>
+                <span>{item.color}</span>
               </div>
               <div className="quantity">
                 <span>Quantity</span>
                 <div className="control">
                   <button
-                    onClick={() => this.props.quantityHandler(-1)}
+                    onClick={()=>changeQuantity(-1, item.name)}
                     style={{
                       cursor:
-                        this.props.quantity === 1 ? "not-allowed" : "pointer",
+                        item.quantity === 1 ? "not-allowed" : "pointer",
                       color:
-                        this.props.quantity === 1
+                        item.quantity === 1
                           ? "rgb(203, 203, 203)"
                           : "black",
                     }}
@@ -61,15 +65,15 @@ class Bag extends React.Component {
                     type="number"
                     min="1"
                     max="4"
-                    value={this.props.quantity}
+                    value={item.quantity}
                   />
                   <button
-                    onClick={() => this.props.quantityHandler(1)}
+                    onClick={()=>changeQuantity(1, item.name)}
                     style={{
                       cursor:
-                        this.props.quantity === 4 ? "not-allowed" : "pointer",
+                        item.quantity === 4 ? "not-allowed" : "pointer",
                       color:
-                        this.props.quantity === 4
+                        item.quantity === 4
                           ? "rgb(203, 203, 203)"
                           : "black",
                     }}
@@ -81,14 +85,19 @@ class Bag extends React.Component {
             </div>
           </div>
           <div className="remove-price">
-            <button className="remove">Remove</button>
+            <button className="remove" onClick={()=>removeProduct(item.name, item.selectedOption)}>Remove</button>
             <div className="price">
-              ₩{this.props.price && this.props.price.toLocaleString()}
+              ₩{item.price && item.price.toLocaleString()}
             </div>
           </div>
         </div>
       </div>
-    );
+      ))
+     
+    )
   }
 }
-export default Bag;
+export default connect(state => {
+  return {
+    cartList: state.cartList
+  }}, { changeQuantity, removeProduct })(Bag);

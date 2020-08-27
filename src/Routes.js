@@ -1,5 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import rootReducer from "./Redux/Reducers";
 import Account from "./Pages/Account/Account";
 import Newsletter from "./Components/Newsletter/Newsletter";
 import Main from "./Pages/Main/Main";
@@ -9,9 +13,12 @@ import Cart from "./Pages/Products/Cart/Cart";
 import Wishlist from "./Pages/Products/Wishlist/Wishlist";
 import Search from "./Components/Search/Search";
 
+const store = createStore(rootReducer, composeWithDevTools());
+
 class Routes extends React.Component {
   render() {
     return (
+      <Provider store={store}>
       <Router>
         <Switch>
           <Route exact path="/" component={Main} />
@@ -28,6 +35,7 @@ class Routes extends React.Component {
           <Route exact path="/wishlist" component={Wishlist} />
         </Switch>
       </Router>
+      </Provider>
     );
   }
 }

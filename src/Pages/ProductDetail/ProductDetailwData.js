@@ -1,15 +1,19 @@
 import React from "react";
-import { API_URL } from "../../config";
+import { connect } from "react-redux";
+import {addProduct} from '../../Redux/Actions';
 import ImageModal from "../../Components/ImageModal/ImageModal";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 import Nav from "../../Components/Nav/Nav";
 import ProductBottomBar from "../../Components/ProductBottomBar/ProductBottomBar";
 import CartModal from "../Products/Cart/CartModal";
 import Footer from "../../Components/Footer/Footer";
+import { API_URL, MOCK_URL } from "../../config";
+import "./ProductDetail.scss";
 import Arrowdown from "../../Images/arrow-down.png";
 import Heart from "../../Images/heart1.png";
 import Heart2 from "../../Images/red-heart.png";
-import "./ProductDetail.scss";
+
+
 
 class ProductDetailwData extends React.Component {
   constructor(props) {
@@ -28,7 +32,6 @@ class ProductDetailwData extends React.Component {
       isVisible: false,
       openCart: false,
       openWishlist: false,
-      cartList: [],
       id : null
     };
   }
@@ -37,7 +40,8 @@ class ProductDetailwData extends React.Component {
     const { id, colorId } = this.props.match.params;
     this.setState({ isLoading: true });
     setTimeout(() => {
-      fetch(`${API_URL}/product/${id}/color/${colorId}`)
+      // fetch(`${API_URL}/product/${id}/color/${colorId}`)
+      fetch(`${MOCK_URL}/detailDatadata.json`)
         .then((res) => res.json())
         .then((res) =>
           this.setState({
@@ -61,29 +65,23 @@ class ProductDetailwData extends React.Component {
     });
   };
 
-  sizeSelectHandler = (option) => {
-    this.setState({ option });
-  };
-
-  arrowClickHandler = () => {
-    const { click } = this.state;
-    this.setState({ click: !click });
-  };
 
   addBtnClick = () => {
+    const {product_images, product_name, product_size, product_color, quantity, product_price} = this.state.detailData;
+    const {option} = this.state; 
+    
     if (this.state.option !== "") {
-      let cartList = this.state.cartList;
-      cartList = cartList.concat({
-        productImage: this.state.detailData.product_images[0],
-        name: this.state.detailData.product_name,
-        size: this.state.detailData.product_size,
-        selectedOption: this.state.option,
-        color: this.state.detailData.product_color,
-        quantity: this.state.detailData.quantity,
-        price: this.state.detailData.product_price,
-      });
+    this.props.addProduct({
+        productImage: product_images[0],
+          name: product_name,
+          size: product_size,
+          selectedOption: option,
+          color: product_color,
+          quantity: quantity,
+          price: product_price,
+          
+      })
       this.setState({
-        cartList,
         openCart: true,
       });
     } else {
@@ -135,8 +133,6 @@ class ProductDetailwData extends React.Component {
 
   render() {
     const {
-      sizeSelectHandler,
-      arrowClickHandler,
       openModal,
       closeModal,
       heartClickHandler,
@@ -159,22 +155,23 @@ class ProductDetailwData extends React.Component {
       });
 
     return (
-      <>
+     <>
         <ImageModal
           isOpen={isModalOpen}
           close={closeModal}
           images={detailData.product_images}
         />
 
-        <Nav cartList={this.state.cartList}/>
+  
+      <Nav/>
 
-        <CartModal
-          cartList={this.state.cartList}
+      <CartModal
           closeCart={this.closeCart}
           closeWishlist={this.closeWishlist}
           openCart={this.state.openCart}
           openWishlist={this.state.openWishlist}
         />
+     
         {isLoading ? (
           <LoadingPage />
         ) : (
@@ -220,7 +217,7 @@ class ProductDetailwData extends React.Component {
                     <div className="select-a-size">
                       <span>Size</span>
                       <div
-                        onClick={arrowClickHandler}
+                        onClick={()=>{this.setState({ click: !click })}}
                         className="size-dropdown-bar"
                       >
                         <div className="drop-down">
@@ -240,9 +237,7 @@ class ProductDetailwData extends React.Component {
                               detailData.product_size.map((opt, i) => {
                                 return (
                                   <li key = {i}
-                                    onClick={() => {
-                                      sizeSelectHandler(opt);
-                                    }}
+                                    onClick={() => this.setState({ option : opt })}
                                     name={opt}
                                   >
                                     {opt}
@@ -326,9 +321,13 @@ class ProductDetailwData extends React.Component {
             )}
           </>
         )}
-      </>
+     </>
     );
   }
 }
 
-export default ProductDetailwData;
+const mapStateToProps = (state) => ({
+  cartList: state.cartList,
+});
+
+export default connect(mapStateToProps, {addProduct})(ProductDetailwData)

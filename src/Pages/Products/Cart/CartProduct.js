@@ -1,40 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import Bag from "./Bag";
 import "./CartProduct.scss";
 
 
 class CartProdcut extends React.Component {
   render() {
+    const { cartList } = this.props
     return (
       <>
-        {this.props.cartList.map((product, i) => {
-          return (
-            <Bag
-              key={i}
-              name={product.name}
-              productImage={product.productImage}
-              color={product.color}
-              selectedOption={product.selectedOption}
-              size={product.size}
-              quantity={product.quantity}
-              price={product.price}
-              quantityHandler={this.props.quantityHandler}
-            />
-          );
-        })}
+        <Bag/>
         <ul className="price-box">
           <li>
             <span>Order value</span>
             <span>
               ₩
-              {this.props.cartList.length === 1
+              {cartList.length === 1
                 ? (
-                    this.props.cartList[0].price *
-                    this.props.cartList[0].quantity
+                    cartList[0].price *
+                    cartList[0].quantity
                   ).toLocaleString()
-                : this.props.cartList &&
-                  this.props.cartList
+                : cartList &&
+                  cartList
                     .reduce((a, b) => {
                       return a.price * a.quantity + b.price * b.quantity;
                     })
@@ -49,14 +37,14 @@ class CartProdcut extends React.Component {
             <span className="total">Total</span>
             <span>
               ₩
-              {this.props.cartList.length === 1
+              {cartList.length === 1
                 ? (
-                    this.props.cartList[0].price *
-                      this.props.cartList[0].quantity +
+                    cartList[0].price *
+                      cartList[0].quantity +
                     31344
                   ).toLocaleString()
-                : this.props.cartList &&
-                  this.props.cartList
+                : cartList &&
+                  cartList
                     .reduce((a, b) => {
                       return (
                         a.price * a.quantity + b.price * b.quantity + 31344
@@ -68,14 +56,7 @@ class CartProdcut extends React.Component {
         </ul>
         <div className="btn-box">
           <button>Checkout</button>
-          <Link
-            to={{
-              pathname: "/cart",
-              state: {
-                cartList: this.props.cartList,
-              },
-            }}
-          >
+          <Link to="/cart">
             <button>View bag</button>
           </Link>
         </div>
@@ -84,4 +65,7 @@ class CartProdcut extends React.Component {
   }
 }
 
-export default CartProdcut;
+export default connect(state => {
+  return {
+    cartList: state.cartList
+  }})(CartProdcut);

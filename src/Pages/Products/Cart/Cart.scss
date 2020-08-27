@@ -232,5 +232,20 @@
         }
       }
     }
+    .empty-bag {
+      padding-top: 70px;
+      margin: 0 auto 66px;
+
+      img {
+        display: block;
+        margin: 0 auto;
+      }
+
+      div {
+        margin: 30px 0;
+        font-size: 16px;
+        letter-spacing: 1.33px;
+      }
+    }
   }
 }
