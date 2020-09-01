@@ -41,7 +41,7 @@ class ProductBottomBar extends React.Component {
                         : "Select a size"}
                     </span>
                     <img
-                      class={this.state.click ? "clicked" : "x-clicked"}
+                      className={this.state.click ? "clicked" : "x-clicked"}
                       alt="arrow-icon"
                       src={Arrowdown}
                     />

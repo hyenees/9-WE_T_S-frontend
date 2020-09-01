@@ -1,11 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import {addProduct} from '../../Redux/Actions';
+import { addProduct, openModal } from '../../Redux/Actions';
 import ImageModal from "../../Components/ImageModal/ImageModal";
 import LoadingPage from "../../Components/LoadingPage/LoadingPage";
 import Nav from "../../Components/Nav/Nav";
 import ProductBottomBar from "../../Components/ProductBottomBar/ProductBottomBar";
-import CartModal from "../Products/Cart/CartModal";
 import Footer from "../../Components/Footer/Footer";
 import { API_URL, MOCK_URL } from "../../config";
 import "./ProductDetail.scss";
@@ -13,12 +12,9 @@ import Arrowdown from "../../Images/arrow-down.png";
 import Heart from "../../Images/heart1.png";
 import Heart2 from "../../Images/red-heart.png";
 
-
-
 class ProductDetailwData extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       detailData: {},
       heartClick: false,
@@ -30,7 +26,6 @@ class ProductDetailwData extends React.Component {
       isLoading: false,
       prevScrollpos: window.pageYOffset,
       isVisible: false,
-      openCart: false,
       openWishlist: false,
       id : null
     };
@@ -67,34 +62,25 @@ class ProductDetailwData extends React.Component {
 
 
   addBtnClick = () => {
-    const {product_images, product_name, product_size, product_color, quantity, product_price} = this.state.detailData;
-    const {option} = this.state; 
+    const { product_images, product_name, product_size, product_color, quantity, product_price } = this.state.detailData;
+    const { option } = this.state; 
     
     if (this.state.option !== "") {
-    this.props.addProduct({
-        productImage: product_images[0],
+      this.props.addProduct({
+          productImage: product_images[0],
           name: product_name,
           size: product_size,
           selectedOption: option,
           color: product_color,
           quantity: quantity,
           price: product_price,
-          
       })
-      this.setState({
-        openCart: true,
-      });
+      this.props.openModal();
     } else {
       this.setState({
         click: !this.state.click,
       });
     }
-  };
-
-  closeCart = () => {
-    this.setState({
-      openCart: false,
-    });
   };
 
   heartClickHandler = () => {
@@ -163,15 +149,7 @@ class ProductDetailwData extends React.Component {
         />
 
   
-      <Nav/>
-
-      <CartModal
-          closeCart={this.closeCart}
-          closeWishlist={this.closeWishlist}
-          openCart={this.state.openCart}
-          openWishlist={this.state.openWishlist}
-        />
-     
+      <Nav/>     
         {isLoading ? (
           <LoadingPage />
         ) : (
@@ -226,7 +204,7 @@ class ProductDetailwData extends React.Component {
                               {option !== "" ? option : "Select a size"}
                             </span>
                             <img
-                              class={click ? "clicked" : "x-clicked"}
+                              className={click ? "clicked" : "x-clicked"}
                               alt="arrow-icon"
                               src={Arrowdown}
                             />
@@ -330,4 +308,4 @@ const mapStateToProps = (state) => ({
   cartList: state.cartList,
 });
 
-export default connect(mapStateToProps, {addProduct})(ProductDetailwData)
+export default connect(mapStateToProps, {addProduct, openModal})(ProductDetailwData)

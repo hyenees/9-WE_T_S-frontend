@@ -27,7 +27,7 @@ class Main extends React.Component {
   render() {
     return (
       <div className="Main">
-        <Nav mouseEnterNav ={this.mouseEnterNav} mouseLeaveNav = {this.mouseLeaveNav} mouseEnter={this.state.mouseEnter} whiteColor={this.state.whiteColor}/>
+        <Nav mouseEnterNav={this.mouseEnterNav} mouseLeaveNav={this.mouseLeaveNav} mouseEnter={this.state.mouseEnter} whiteColor={this.state.whiteColor}/>
         <Contents />
         <Footer />
       </div>

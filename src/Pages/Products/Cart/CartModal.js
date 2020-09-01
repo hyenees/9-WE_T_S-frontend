@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import {changeQuantity} from "../../../Redux/Actions"
+import { closeModal } from "../../../Redux/Actions"
 import CartProduct from "./CartProduct";
 import WishProduct from "../Wishlist/WishProduct";
 import { API_URL } from "../../../config"
@@ -27,35 +27,20 @@ class CartModal extends React.Component {
       }))
   }
 
-  cartQuantityHandler = ()=>{
-    const { cartList } = this.props
-    if(cartList.length === 0){
-      return 0;
-    }
-    if(cartList.length === 1){
-      console.log(cartList[0].quantity)
-      return cartList[0].quantity
-    }
-    if(cartList.length > 1){
-      cartList.reduce((a, b) => {
-        return a.quantity + b.quantity})
-    }
-  }
-
   render() {
-    const {cartList, openCart, closeCart, openWishlist, closeWishlist } = this.props;
+    const {cartList, cartModal, closeModal, openWishlist, closeWishlist, cartQuantityHandler } = this.props;
     return (
       <>
-        {openCart ? (
+        {cartModal && (
           <div className="product-container">
             <div className="bag-title">
               <div>
                 <button className="change">
-                  Bag ({this.cartQuantityHandler()})
+                  Bag ({cartQuantityHandler()})
                 </button>
                 <button>Wishlist (0)</button>
               </div>
-              <button className="close" onClick={closeCart}>
+              <button className="close" onClick={closeModal}>
                 Close
               </button>
             </div>
@@ -68,8 +53,8 @@ class CartModal extends React.Component {
             </div>
             }
           </div>
-        ) : null}
-        {openWishlist && this.state.wishList.length > 0 ? (
+         )}
+        {openWishlist && this.state.wishList.length > 0 && (
           <div className="product-container">
             <div className="bag-title">
               <div>
@@ -88,7 +73,7 @@ class CartModal extends React.Component {
             <WishProduct wishList={this.state.wishList}/>
             </div>
           </div>
-        ) : null}
+        )}
       </>
     );
   }
@@ -96,5 +81,6 @@ class CartModal extends React.Component {
 
 export default connect(state => {
   return {
-    cartList: state.cartList
-  }}, { changeQuantity })(CartModal);
+    cartList: state.cartList,
+    cartModal: state.cartModal,
+  }}, { closeModal })(CartModal);

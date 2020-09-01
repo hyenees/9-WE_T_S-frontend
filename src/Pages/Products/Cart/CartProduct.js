@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { closeModal } from "../../../Redux/Actions"
 import Bag from "./Bag";
 import "./CartProduct.scss";
 
-
 class CartProdcut extends React.Component {
   render() {
-    const { cartList } = this.props
+    const { cartList, closeModal } = this.props
     return (
       <>
         <Bag/>
@@ -57,7 +57,7 @@ class CartProdcut extends React.Component {
         <div className="btn-box">
           <button>Checkout</button>
           <Link to="/cart">
-            <button>View bag</button>
+            <button onClick={closeModal}>View bag</button>
           </Link>
         </div>
       </>
@@ -65,7 +65,7 @@ class CartProdcut extends React.Component {
   }
 }
 
-export default connect(state => {
+export default connect((state => {
   return {
     cartList: state.cartList
-  }})(CartProdcut);
+  }}),{ closeModal })(CartProdcut);

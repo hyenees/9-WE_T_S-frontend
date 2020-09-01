@@ -1,17 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { API_URL } from "../../config";
+import { openModal } from '../../Redux/Actions';
 import Newsletter from "../Newsletter/Newsletter";
 import NewsletterPortal from "../Newsletter/NewsletterPortal";
 import Search from "../Search/Search";
 import SearchPortal from "../Search/SearchPortal";
 import CartModal from "../../Pages/Products/Cart/CartModal";
+import { API_URL } from "../../config";
 import "./Nav.scss";
 import ami_logo from "../../Images/amilogo.png";
 import ami_white from "../../Images/amilogo-white.png";
 import ami_black from "../../Images/amilogo1.png";
-
 
 class Nav extends React.Component {
   constructor() {
@@ -21,8 +21,8 @@ class Nav extends React.Component {
       prevScrollpos: window.pageYOffset,
       visible: true,
       mouseEnter: false,
-      Newsletter: false,
-      Search: false,
+      openNewsletter: false,
+      openSearch: false,
       isLoggedIn: false,
       category: [],
     };
@@ -33,8 +33,7 @@ class Nav extends React.Component {
       this.setState({ isLoggedIn: true });
     }
     window.addEventListener("scroll", this.handleScroll);
-    fetch(`
-    ${API_URL}/menu`)
+    fetch(`${API_URL}/menu`)
       .then((res) => res.json())
       .then((res) =>
         this.setState({
@@ -71,9 +70,11 @@ class Nav extends React.Component {
   };
 
   imgHandler = () => {
-    if (this.state.visible) {
-      if(this.props.whiteColor){
-        if(this.props.mouseEnter){
+    const { visible }=this.state;
+    const { whiteColor, mouseEnter }=this.props;
+    if (visible) {
+      if(whiteColor){
+        if(mouseEnter){
           return ami_black;
         }
         return ami_white;
@@ -85,60 +86,36 @@ class Nav extends React.Component {
     }
   };
 
-  handleOpenModal = () => {
-    this.setState({
-      Newsletter: true,
-    });
-  };
-
-  handleOpenSearch = () => {
-    this.setState({
-      Search: true,
-    });
-  };
-
-  handleCloseModal = () => {
-    this.setState({
-      Newsletter: false,
-    });
-  };
-
-  handleCloseSearch = () => {
-    this.setState({
-      Search: false,
-    });
-  };
-
   cartQuantityHandler = ()=>{
     const { cartList } = this.props
     if(cartList.length === 0){
       return 0;
     }
     if(cartList.length === 1){
-      console.log(cartList[0].quantity)
       return cartList[0].quantity
     }
     if(cartList.length > 1){
-      cartList.reduce((a, b) => {
+      return cartList.reduce((a, b) => {
         return a.quantity + b.quantity})
     }
   }
 
   render() {
+    const { visible, activeTab, isLoggedIn, openSearch, openNewsletter, category } = this.state;
+    const { openModal, mouseEnter, mouseEnterNav, mouseLeaveNav, whiteColor } = this.props;
+
     const colorchange =
-      this.state.visible && !this.props.mouseEnter && this.props.whiteColor
+      visible && !mouseEnter && whiteColor
         ? "white-color"
         : "";
 
     return (
-      <>
-
+      <div className="Nav">
       <div
-        className={`Nav ${this.state.visible ? "text-logo" : ""}`}
-        onMouseEnter={this.props.mouseEnterNav}
-        onMouseLeave={this.props.mouseLeaveNav}
+        className={`nav-box ${visible ? "text-logo" : ""}`}
+        onMouseEnter={mouseEnterNav}
+        onMouseLeave={mouseLeaveNav}
       >
-              <CartModal cartQuantityHandler={this.cartQuantityHandler}/>
         <ul className="left-menu">
           <li
             onMouseOver={() => this.mouseOver(0)}
@@ -148,8 +125,8 @@ class Nav extends React.Component {
             <span className={`${colorchange} menu-tab`}>Menu</span>
             <div
               className={`hover-nav ${
-                this.state.activeTab === 0 ? "show" : "hide"
-              } ${this.state.visible ? "text-logo" : ""}`}
+                activeTab === 0 ? "show" : "hide"
+              } ${visible ? "text-logo" : ""}`}
             >
               <ul className="product-nav">
                 <li>Rainbow Capsule Collection</li>
@@ -184,8 +161,8 @@ class Nav extends React.Component {
             </a>
             <div
               className={`hover-nav ${
-                this.state.activeTab === 1 ? "show" : "hide"
-              } ${this.state.visible ? "text-logo" : ""}`}
+                activeTab === 1 ? "show" : "hide"
+              } ${visible ? "text-logo" : ""}`}
             >
               <ul className="sale-text product-nav">
                 <li>T-Shirts & Polos</li>
@@ -213,13 +190,13 @@ class Nav extends React.Component {
             </Link>
             <div
               className={`hover-nav ${
-                this.state.activeTab === 2 ? "show" : "hide"
-              } ${this.state.visible ? "text-logo" : ""}`}
+                activeTab === 2 ? "show" : "hide"
+              } ${visible ? "text-logo" : ""}`}
             >
               <ul className="product-nav">
                 <li className="sale-tab">Sale</li>
-                {this.state.category &&
-                  this.state.category.map((list, i) => {
+                {category &&
+                  category.map((list, i) => {
                     return <li key={i}>{list.category_name}</li>;
                   })}
                 {/* <li>New Arrivals</li>
@@ -263,8 +240,8 @@ class Nav extends React.Component {
             </a>
             <div
               className={`hover-nav ${
-                this.state.activeTab === 3 ? "show" : "hide"
-              } ${this.state.visible ? "text-logo" : ""}`}
+                activeTab === 3 ? "show" : "hide"
+              } ${visible ? "text-logo" : ""}`}
             >
               <ul className="product-nav">
                 <li className="sale-tab">Sale</li>
@@ -308,8 +285,8 @@ class Nav extends React.Component {
             </a>
             <div
               className={`hover-nav acc-nav ${
-                this.state.activeTab === 4 ? "show" : "hide"
-              } ${this.state.visible ? "text-logo" : ""}`}
+                activeTab === 4 ? "show" : "hide"
+              } ${visible ? "text-logo" : ""}`}
             >
               <ul className="product-nav">
                 <li>Beanies & Caps</li>
@@ -344,8 +321,8 @@ class Nav extends React.Component {
             </a>
             <div
               className={`hover-nav acc-nav ${
-                this.state.activeTab === 5 ? "show" : "hide"
-              } ${this.state.visible ? "text-logo" : ""}`}
+                activeTab === 5 ? "show" : "hide"
+              } ${visible ? "text-logo" : ""}`}
             >
               <ul className="product-nav shoes-nav">
                 <li>Sneakers</li>
@@ -368,7 +345,7 @@ class Nav extends React.Component {
         <Link to="/">
           <div className="logo">
             <img
-              className={this.state.visible ? "text-logo" : ""}
+              className={visible ? "text-logo" : ""}
               src={this.imgHandler()}
               alt=""
             />
@@ -376,22 +353,22 @@ class Nav extends React.Component {
         </Link>
         <ul className="right-menu">
           <li>
-            <button className={colorchange} onClick={this.handleOpenModal}>
+            <button className={colorchange} onClick={()=>this.setState({openNewsletter: true})}>
               Newsletter
             </button>
           </li>
           <li>
-            <button className={colorchange} onClick={this.handleOpenSearch}>
+            <button className={colorchange} onClick={()=>this.setState({openSearch: true})}>
               Search
             </button>
           </li>
           <li>
             <Link to="/account" className={`${colorchange} account-tab`}>
-              {this.state.isLoggedIn ? "Hello" : "Account"}
+              {isLoggedIn ? "Hello" : "Account"}
             </Link>
           </li>
           <li>
-            <button className={colorchange}>
+            <button className={colorchange} onClick={openModal}>
               Cart ({this.cartQuantityHandler()})
             </button>
           </li>
@@ -400,26 +377,25 @@ class Nav extends React.Component {
           </li>
     
         </ul>
-        {console.log(this.props.openCart, this.props.openWishlist)}
       
-        {this.state.Newsletter && (
+        {openNewsletter && (
           <NewsletterPortal>
-            <Newsletter onClose={this.handleCloseModal} />
+            <Newsletter onClose={()=>this.setState({openNewsletter: false})} />
           </NewsletterPortal>
         )}
-        {this.state.Search && (
+        {openSearch && (
           <SearchPortal>
-            <Search onClose={this.handleCloseSearch} />
+            <Search onClose={()=>this.setState({openSearch: false})} />
           </SearchPortal>
         )}
       </div>
-    
-      </>
+      <CartModal cartQuantityHandler={this.cartQuantityHandler} />
+      </div>
     );
   }
 }
 
-export default connect(state => {
+export default connect((state => {
   return {
-    cartList: state.cartList
-  }})(Nav);
+    cartList: state.cartList,
+  }}), { openModal })(Nav);

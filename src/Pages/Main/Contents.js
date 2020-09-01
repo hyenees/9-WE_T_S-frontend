@@ -71,7 +71,6 @@ class Contents extends React.Component {
               width="100%"
               height="100%"
               autoPlay
-              // poster="https://www.amiparis.com/BWStaticContent/14000/68c560e9-08a8-49dc-9451-bec3460f449f_card-block-desktop.jpg"
               controls
             >
               <source

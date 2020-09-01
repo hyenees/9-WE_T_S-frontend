@@ -8,7 +8,7 @@ const cartList = (state = INITIAL_STATE, action) => {
     case "CHANGE_QUANTITY":
       let newArr = state;
       return newArr.map(item => {
-        if(item.name === action.product_name){
+        if(item.name === action.product_name && item.selectedOption === action.product_size){
           if(action.payload === 1){
             if(item.quantity === 4){
               return item;

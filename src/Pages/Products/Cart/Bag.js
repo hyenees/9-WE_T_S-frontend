@@ -22,16 +22,12 @@ class Bag extends React.Component {
               <div className="size">
                 <span>Size</span>
                 <div className="control">
-                  <select>
+                  <select defaultValue={item.selectedOption}>
                     {item.size &&
                       item.size.map((s, index) => {
                         return (
                           <option
-                            selected={
-                              s === item.selectedOption
-                                ? "selected"
-                                : ""
-                            }
+                            value={s}
                             key={index}
                           >
                             {s}
@@ -49,7 +45,7 @@ class Bag extends React.Component {
                 <span>Quantity</span>
                 <div className="control">
                   <button
-                    onClick={()=>changeQuantity(-1, item.name)}
+                    onClick={()=>changeQuantity(-1, item.name, item.selectedOption)}
                     style={{
                       cursor:
                         item.quantity === 1 ? "not-allowed" : "pointer",
@@ -66,9 +62,10 @@ class Bag extends React.Component {
                     min="1"
                     max="4"
                     value={item.quantity}
+                    readOnly
                   />
                   <button
-                    onClick={()=>changeQuantity(1, item.name)}
+                    onClick={()=>changeQuantity(1, item.name, item.selectedOption)}
                     style={{
                       cursor:
                         item.quantity === 4 ? "not-allowed" : "pointer",

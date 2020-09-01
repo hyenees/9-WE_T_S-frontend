@@ -1,262 +1,265 @@
 .Nav {
-  background: #ffffff;
-  display: flex;
-  width: 100%;
-  height: 54px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 70px;
   position: fixed;
   z-index: 2;
-  transition: 0.2s;
+  width: 100%;
 
-  &.text-logo {
-    height: 80px;
-    background: transparent;
-
-    &:hover {
-      background: white;
-    }
-  }
-
-  .left-menu {
+  .nav-box {
     display: flex;
-    flex: 1;
-    height: 100%;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
+    height: 54px;
+    padding: 0 70px;
+    background: #ffffff;
+    transition: 0.2s;
 
-    .category-btn:first-child {
-      margin-left: -20px;
-    }
+    &.text-logo {
+      height: 80px;
+      background: transparent;
 
-    .category-btn {
-      height: 100%;
-      padding: 0 20px;
-      display: flex;
-      align-items: center;
-
-      .menu-tab {
-        font-family: "MierA-Demi";
-        color: black;
-        width: 100%;
-        font-size: 13px;
-        font-weight: 400;
-        line-height: 18.2px;
-        letter-spacing: 1px;
-        padding-bottom: 4px;
-        margin-bottom: -4px;
-        transition: color 0.3s ease 0s;
-        position: relative;
-
-        &.white-color {
-          color: white;
-        }
-      }
-      .sale-tab {
-        color: #ff0000;
-      }
-
-      .menu-tab::before {
-        content: "";
-        position: absolute;
-        border-bottom: 1px solid black;
-        padding: 0px;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
-        width: 0;
-        transition: 0.2s;
-      }
-
-      .menu-tab:hover::before {
-        border-bottom: 1px solid #999999;
-        width: 100%;
-        padding: 0;
-      }
-
-      .menu-tab:hover {
-        color: #999999;
-      }
-
-      .hover-nav {
-        position: absolute;
-        top: 54px;
-        left: 0;
-        padding: 20px 73px 37px 70px;
-        width: 100%;
-        height: 301px;
+      &:hover {
         background: white;
-        transition: 0.7s;
+      }
+    }
 
-        &.show {
-          visibility: visible;
-          opacity: 1;
-          &.text-logo {
-            top: 80px;
-          }
-        }
+    .left-menu {
+      display: flex;
+      flex: 1;
+      height: 100%;
+      align-items: center;
+      justify-content: flex-start;
 
-        &.hide {
-          visibility: hidden;
-          opacity: 0;
-        }
+      .category-btn:first-child {
+        margin-left: -20px;
+      }
 
-        .product-nav {
-          width: 738px;
-          height: 225px;
-          display: grid;
-          grid-auto-flow: column;
-          grid-template-rows: repeat(9, auto);
-          grid-template-columns: repeat(3, 17rem);
-          align-content: start;
-        }
+      .category-btn {
+        height: 100%;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
 
-        li,
-        .sale-text,
-        .red-text {
-          margin-bottom: 10px;
-          font-size: 11px;
-          letter-spacing: 1.3px;
-          line-height: 15.4px;
-          padding: 0;
-          margin: 0 0 10px 0;
-        }
-
-        .sale-text {
-          color: #ff0000;
-        }
-
-        .red-text {
-          font-family: "MierA-Book";
-          color: #ff0000;
-          margin: 0;
-          position: absolute;
-          bottom: 37px;
-        }
-
-        .img {
-          width: 300px;
-          height: 238.16px;
-          position: absolute;
-          right: 73px;
-          top: 20px;
-
-          img {
-            width: 100%;
-            height: 200.16px;
-          }
-        }
-
-        .acc-img {
-          width: 300px;
-          height: 262.11px;
-          position: absolute;
-          right: 73px;
-          top: 20px;
-
-          img {
-            width: 100%;
-            height: 224.11px;
-          }
-        }
-
-        p {
-          margin-top: 18px;
-          font-size: 12px;
+        .menu-tab {
+          font-family: "MierA-Demi";
+          color: black;
+          width: 100%;
+          font-size: 13px;
+          font-weight: 400;
+          line-height: 18.2px;
           letter-spacing: 1px;
-        }
-      }
-      .acc-nav {
-        height: 319.2px;
+          padding-bottom: 4px;
+          margin-bottom: -4px;
+          transition: color 0.3s ease 0s;
+          position: relative;
 
-        .shoes-nav {
-          height: 234.11px;
+          &.white-color {
+            color: white;
+          }
+        }
+        .sale-tab {
+          color: #ff0000;
+        }
+
+        .menu-tab::before {
+          content: "";
+          position: absolute;
+          border-bottom: 1px solid black;
+          padding: 0px;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+          width: 0;
+          transition: 0.2s;
+        }
+
+        .menu-tab:hover::before {
+          border-bottom: 1px solid #999999;
+          width: 100%;
+          padding: 0;
+        }
+
+        .menu-tab:hover {
+          color: #999999;
+        }
+
+        .hover-nav {
+          position: absolute;
+          top: 54px;
+          left: 0;
+          padding: 20px 73px 37px 70px;
+          width: 100%;
+          height: 301px;
+          background: white;
+          transition: 0.7s;
+
+          &.show {
+            visibility: visible;
+            opacity: 1;
+            &.text-logo {
+              top: 80px;
+            }
+          }
+
+          &.hide {
+            visibility: hidden;
+            opacity: 0;
+          }
+
+          .product-nav {
+            width: 738px;
+            height: 225px;
+            display: grid;
+            grid-auto-flow: column;
+            grid-template-rows: repeat(9, auto);
+            grid-template-columns: repeat(3, 17rem);
+            align-content: start;
+          }
+
+          li,
+          .sale-text,
+          .red-text {
+            margin-bottom: 10px;
+            font-size: 11px;
+            letter-spacing: 1.3px;
+            line-height: 15.4px;
+            padding: 0;
+            margin: 0 0 10px 0;
+          }
+
+          .sale-text {
+            color: #ff0000;
+          }
+
+          .red-text {
+            font-family: "MierA-Book";
+            color: #ff0000;
+            margin: 0;
+            position: absolute;
+            bottom: 37px;
+          }
+
+          .img {
+            width: 300px;
+            height: 238.16px;
+            position: absolute;
+            right: 73px;
+            top: 20px;
+
+            img {
+              width: 100%;
+              height: 200.16px;
+            }
+          }
+
+          .acc-img {
+            width: 300px;
+            height: 262.11px;
+            position: absolute;
+            right: 73px;
+            top: 20px;
+
+            img {
+              width: 100%;
+              height: 224.11px;
+            }
+          }
+
+          p {
+            margin-top: 18px;
+            font-size: 12px;
+            letter-spacing: 1px;
+          }
+        }
+        .acc-nav {
+          height: 319.2px;
+
+          .shoes-nav {
+            height: 234.11px;
+          }
         }
       }
     }
-  }
 
-  .logo {
-    width: 98px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    img {
-      width: 22px;
-
-      &.text-logo {
-        width: 100%;
-        opacity: 1;
-      }
-    }
-  }
-
-  .right-menu {
-    display: flex;
-    flex: 1;
-    height: 100%;
-    align-items: center;
-    justify-content: flex-end;
-
-    li {
+    .logo {
+      width: 98px;
       height: 100%;
       display: flex;
       align-items: center;
-      margin-right: 40px;
+      justify-content: center;
 
-      button,
-      .account-tab {
-        font-family: "MierA-Demi";
-        height: 22px;
-        padding: 0;
-        font-size: 13px;
-        font-weight: 400;
-        letter-spacing: 1.3px;
-        line-height: 18.2px;
-        padding-bottom: 4px;
-        margin-bottom: -4px;
-        color: black;
-        position: relative;
-        border: none;
-        background: none;
-        cursor: pointer;
+      img {
+        width: 22px;
 
-        &.white-color {
-          color: white;
+        &.text-logo {
+          width: 100%;
+          opacity: 1;
         }
-      }
-      button::before,
-      .account-tab::before {
-        content: "";
-        position: absolute;
-        border-bottom: 1px solid black;
-        padding: 0px;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
-        width: 0;
-        transition: 0.3s;
-      }
-
-      button:hover::before,
-      .account-tab:hover::before {
-        width: 100%;
-        padding: 0;
-        border-bottom: 1px solid #999999;
-      }
-
-      .account-tab:hover {
-        color: #999999;
       }
     }
 
-    li:last-child {
-      margin-right: 0;
+    .right-menu {
+      display: flex;
+      flex: 1;
+      height: 100%;
+      align-items: center;
+      justify-content: flex-end;
+
+      li {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        margin-right: 40px;
+
+        button,
+        .account-tab {
+          font-family: "MierA-Demi";
+          height: 22px;
+          padding: 0;
+          font-size: 13px;
+          font-weight: 400;
+          letter-spacing: 1.3px;
+          line-height: 18.2px;
+          padding-bottom: 4px;
+          margin-bottom: -4px;
+          color: black;
+          position: relative;
+          border: none;
+          background: none;
+          cursor: pointer;
+
+          &.white-color {
+            color: white;
+          }
+        }
+        button::before,
+        .account-tab::before {
+          content: "";
+          position: absolute;
+          border-bottom: 1px solid black;
+          padding: 0px;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+          width: 0;
+          transition: 0.3s;
+        }
+
+        button:hover::before,
+        .account-tab:hover::before {
+          width: 100%;
+          padding: 0;
+          border-bottom: 1px solid #999999;
+        }
+
+        .account-tab:hover {
+          color: #999999;
+        }
+      }
+
+      li:last-child {
+        margin-right: 0;
+      }
     }
   }
 }

@@ -92,9 +92,10 @@ class Product extends React.Component {
             }
           >
             <div className="color-options">
-              {colors.map((color) => {
+              {colors.map((color, idx) => {
                 return (
                   <img
+                    key={idx}
                     onMouseEnter={() => colorMouseOver(imageUrl)}
                     onMouseLeave={colorMouseOut}
                     alt=""

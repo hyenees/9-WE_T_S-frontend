@@ -32,16 +32,12 @@ class Cart extends React.Component {
                           <div className="size">
                             <span>Size</span>
                             <div className="control">
-                              <select>
+                              <select defaultValue={product.selectedOption}>
                                 {product.size &&
                                   product.size.map((s, index) => {
                                     return (
                                       <option
-                                        selected={
-                                          s === product.selectedOption
-                                            ? "selected"
-                                            : ""
-                                        }
+                                        value={s}
                                         key={index}
                                       >
                                         {s}
@@ -59,7 +55,7 @@ class Cart extends React.Component {
                             <span>Quantity</span>
                             <div className="control">
                               <button
-                                onClick={()=>changeQuantity(-1, product.name)}
+                                onClick={()=>changeQuantity(-1, product.name, product.selectedOption)}
                                 style={{
                                   cursor:
                                     product.quantity === 1
@@ -78,9 +74,10 @@ class Cart extends React.Component {
                                 min="1"
                                 max="4"
                                 value={product.quantity}
+                                readOnly
                               />
                               <button
-                                onClick={()=>changeQuantity(1, product.name)}
+                                onClick={()=>changeQuantity(1, product.name, product.selectedOption)}
                                 style={{
                                   cursor:
                                     product.quantity === 4
